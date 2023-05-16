@@ -50,6 +50,7 @@ const registerSchema = Joi.object({
     "any.required": "idCard number is required",
     "string.length": "idCard number must be 13 characters long",
   }),
+  role: Joi.string().trim(),
 });
 
 exports.validateRegister = validate(registerSchema);
