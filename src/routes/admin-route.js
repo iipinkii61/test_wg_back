@@ -3,5 +3,6 @@ const adminController = require("../controllers/admin-controller");
 
 const router = express.Router();
 
-router.get("/:userId", adminController.getDataByUserId);
+router.get("/", adminController.getAllUser);
+router.delete("/:userId", adminController.deleteUser);
 module.exports = router;

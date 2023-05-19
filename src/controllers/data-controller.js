@@ -8,6 +8,9 @@ exports.getMyData = async (req, res, next) => {
       where: {
         userId: req.user.id,
       },
+      attributes: {
+        exclude: ["createdAt", "updatedAt"],
+      },
     });
 
     res.status(200).json(myData);

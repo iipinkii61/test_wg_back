@@ -1,24 +1,50 @@
-// const { Op } = require("sequelize");
+const { Op } = require("sequelize");
 const { WeightHeight, User } = require("../models");
 const createError = require("../utils/create-error.js");
 
-exports.getDataByUserId = async (req, res, next) => {
+exports.getAllUser = async (req, res, next) => {
   try {
     if (req.user.role !== "admin") {
       createError("You have no permission to access this");
     }
-    const userData = await User.findAll({
-      where: { id: req.params.userId },
+    const userInfo = await User.findAll({
+      where: {
+        role: {
+          [Op.not]: "admin",
+        },
+      },
       include: [
         {
           model: WeightHeight,
+          attributes: {
+            exclude: ["createdAt", "updatedAt", "userId"],
+          },
         },
       ],
       attributes: {
-        exclude: ["status", "password"],
+        exclude: ["password", "createdAt", "updatedAt", "role"],
       },
     });
-    res.status(200).json(userData);
+    res.status(200).json(userInfo);
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.deleteUser = async (req, res, next) => {
+  try {
+    if (req.user.role !== "admin") {
+      createError("You have no permission to access this");
+    }
+    const user = await User.findOne({
+      where: { id: req.params.userId },
+    });
+    if (!user) {
+      createError("this user was not found", 400);
+    }
+
+    await user.destroy();
+    res.status(200).json(user);
   } catch (err) {
     next(err);
   }
