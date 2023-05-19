@@ -46,3 +46,16 @@ exports.deleteData = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.updateData = async (req, res, next) => {
+  try {
+    const value = req.body;
+
+    const newData = await WeightHeight.update(value, {
+      where: { id: req.params.dataId, userId: req.user.id },
+    });
+    res.status(201).json(newData);
+  } catch (err) {
+    next(err);
+  }
+};

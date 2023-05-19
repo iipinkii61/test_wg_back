@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const errorMiddleware = require("./middlewares/error");
 const authenticate = require("./middlewares/authenticate");
 
@@ -10,6 +11,7 @@ const { sequelize } = require("./models");
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 
 // sequelize.sync({ force: true });
