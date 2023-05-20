@@ -31,6 +31,25 @@ exports.getAllUser = async (req, res, next) => {
   }
 };
 
+exports.getAllData = async (req, res, next) => {
+  try {
+    if (req.user.role !== "admin") {
+      createError("You have no permission to access this");
+    }
+    const allData = await WeightHeight.findAll({
+      include: [
+        {
+          model: User,
+          attributes: {
+            exclude: ["password", "createdAt", "updatedAt", "role"],
+          },
+        },
+      ],
+    });
+    res.status(200).json(allData);
+  } catch (err) {}
+};
+
 exports.deleteUser = async (req, res, next) => {
   try {
     if (req.user.role !== "admin") {

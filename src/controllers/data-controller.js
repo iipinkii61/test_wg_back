@@ -1,15 +1,18 @@
-const { WeightHeight } = require("../models");
+const { WeightHeight, User } = require("../models");
 const createError = require("../utils/create-error.js");
 const { validateData } = require("../validators/data-validate");
 
 exports.getMyData = async (req, res, next) => {
   try {
-    const myData = await WeightHeight.findAll({
+    const myData = await User.findOne({
       where: {
-        userId: req.user.id,
+        id: req.user.id,
       },
       attributes: {
-        exclude: ["createdAt", "updatedAt"],
+        exclude: ["createdAt", "updatedAt", "password"],
+      },
+      include: {
+        model: WeightHeight,
       },
     });
 

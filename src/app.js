@@ -7,7 +7,7 @@ const authRoute = require("./routes/auth-route");
 const dataRoute = require("./routes/data-route");
 const adminRoute = require("./routes/admin-route");
 
-const { sequelize } = require("./models");
+const { sequelize, WeightHeight } = require("./models");
 
 const app = express();
 
